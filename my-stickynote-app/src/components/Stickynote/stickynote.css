@@ -2,7 +2,7 @@
     position: absolute;
     width: 200px;
     height: 120px;
-    background-color: blueviolet;
+    background-color: white;
     resize: both;
     overflow: auto;
 }

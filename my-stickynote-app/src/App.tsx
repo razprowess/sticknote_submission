@@ -16,12 +16,33 @@ function App() {
     }
   }, []);
 
-  const handleCreateNote = () => {
-    const newNote = [...notes, {
-      id: new Date().getTime(),
-      top: 0,
+  const getNewNotePosition = (): { left: number, top: number} => {
+
+    const lastNodeId = notes[notes.length - 1]?.id;
+    if(lastNodeId){
+      const lastNoteElement = document.getElementById(lastNodeId.toString());
+      const rect = lastNoteElement?.getBoundingClientRect();
+      const notesContainerSize = (0.8 * window.innerWidth);
+      const leftPos = (rect?.right || 0);
+      const pageBreak = leftPos + 220 >= notesContainerSize ? 1 : 0;
+      return {
+        left: pageBreak ? 0 : leftPos + 20, 
+        top: pageBreak ? lastNoteElement!.offsetTop + rect!.height + 20 : lastNoteElement!.offsetTop,
+      }
+    }
+    return {
       left: 0,
-      content: ""
+      top: 0,
+    }
+  }
+
+  const handleCreateNote = () => {
+    const newNotePosition = getNewNotePosition();
+    const newNote = [...notes, {
+      id: Number(new Date().getTime()),
+      content: "",
+      left: newNotePosition.left,
+      top: newNotePosition.top,
     }]
     setNotes(newNote);
     Store.setItem("notes", JSON.stringify(newNote));
@@ -39,12 +60,16 @@ function App() {
     note.left = left;
     note.top = top;
     setNotes(allNotes);
+    Store.setItem("notes", JSON.stringify(allNotes));
+
   }
 
   const handleRemovenote = (noteId: number) => {
     const allNotes = [...notes];
     const filterNotes = allNotes.filter((n) => n.id !== noteId);
     setNotes(filterNotes);
+    Store.setItem("notes", JSON.stringify(allNotes));
+
   }
 
   return (
