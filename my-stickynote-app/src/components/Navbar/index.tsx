@@ -1,13 +1,21 @@
 import './navbar.css';
 
+interface NavBarProp {
+createNote: Function,
+}
 
-const Navbar: React.FC = () => {
+const Navbar: React.FC<NavBarProp> = ({createNote}) => {
+    
+    const handleAddNote =()=> {
+        createNote();
+    }
+
     return (
         <div className="navbar-container">
             <h2>Sticky Note</h2>
             <ul>
                 <li>
-                    <a title='Add a Note' href='#'> 
+                    <a title='Add a Note' href='#' onClick={handleAddNote}> 
                    <img className='navbar-icon' src='/icons/plus.svg' alt='add icon'/>
                    </a>
                 </li>
