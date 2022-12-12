@@ -2,12 +2,17 @@ import './navbar.css';
 
 interface NavBarProp {
 createNote: Function,
+clearNote: Function,
 }
 
-const Navbar: React.FC<NavBarProp> = ({createNote}) => {
+const Navbar: React.FC<NavBarProp> = ({createNote, clearNote}) => {
     
     const handleAddNote =()=> {
         createNote();
+    }
+
+    const handleClearNote = () => {
+        clearNote();
     }
 
     return (
@@ -20,7 +25,7 @@ const Navbar: React.FC<NavBarProp> = ({createNote}) => {
                    </a>
                 </li>
                 <li>
-                    <a title='Clear all Notes' href='#'>
+                    <a title='Clear all Notes' href='#' onClick={handleClearNote}>
                    <img className='navbar-icon' src='/icons/delete.svg' alt='trash icon'/>
                    </a>
                 </li>
